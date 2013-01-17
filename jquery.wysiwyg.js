@@ -675,6 +675,7 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 			if (element === range.startContainer) {
 				element = element.childNodes[range.startOffset];
 			}
+			if (element==null || typeof(element)=='undefined') return null;
 			
 			if(!element.tagName && (element.previousSibling || element.nextSibling)) {
 				if(element.previousSibling) {
@@ -2364,13 +2365,22 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 						dialogWidth = this.options.width == 'auto' ? 450 : this.options.width;
 
 					// console.log(that._$dialog);
+					var dlgBtn = {};
+					that._$dialog.find('input.button').each(function() {
+						var $btn = $(this);
+						$btn.hide();
+						dlgBtn[ $btn.val() ] = function() {
+							$btn.click();
+						};
+					});
 					
 					that._$dialog.dialog({
 						modal: this.options.modal,
 						draggable: this.options.draggable,
 						height: this.options.height == 'auto' ? "auto" : dialogHeight,
 						width: dialogWidth,
-						resizable:false
+						resizable:false,
+						buttons : dlgBtn
 					});
 
 					return that._$dialog;
