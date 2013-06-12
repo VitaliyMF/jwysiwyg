@@ -1397,7 +1397,7 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 			 * @link https://github.com/akzhan/jwysiwyg/issues/330
 			 */
 			$(self.original).focus(function () {
-				if ($(this).filter(":visible").length === 0 || $.browser.opera) {
+				if ($(this).filter(":visible").length === 0 || $.browser.opera || self.viewHTML) {
 					return;
 				}
 				self.ui.focus();
