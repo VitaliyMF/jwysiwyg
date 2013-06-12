@@ -171,14 +171,20 @@
 					open: function (ev, ui) {
 						$("input:submit", dialog).click(function (e) {
 							e.preventDefault();
+
+							 Wysiwyg.ui.focus();
+							 return false;
 						});
 						$("input:reset", dialog).click(function (e) {
 							e.preventDefault();
+							Wysiwyg.ui.focus();
 						});
 					},
 					close: function (ev, ui) {
 						dialog.dialog("destroy");
 						dialog.remove();
+						Wysiwyg.ui.focus();
+					}
 					}, 
 					buttons : dlgButtons
 				});
