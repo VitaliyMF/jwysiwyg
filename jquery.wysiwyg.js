@@ -97,8 +97,8 @@
 				groupIndex: 7,
 				visible: true,
 				className: "h1",
-				command: ($.browser.msie || $.browser.opera) ? "FormatBlock" : "heading",
-				"arguments": ($.browser.msie || $.browser.opera) ? "<h1>" : "h1",
+				command: "FormatBlock",
+				"arguments": "<h1>",
 				tags: ["h1"],
 				tooltip: "Header 1"
 			},
@@ -107,8 +107,8 @@
 				groupIndex: 7,
 				visible: true,
 				className: "h2",
-				command: ($.browser.msie || $.browser.opera)	? "FormatBlock" : "heading",
-				"arguments": ($.browser.msie || $.browser.opera) ? "<h2>" : "h2",
+				command: "FormatBlock",
+				"arguments": "<h2>",
 				tags: ["h2"],
 				tooltip: "Header 2"
 			},
@@ -117,8 +117,8 @@
 				groupIndex: 7,
 				visible: true,
 				className: "h3",
-				command: ($.browser.msie || $.browser.opera) ? "FormatBlock" : "heading",
-				"arguments": ($.browser.msie || $.browser.opera) ? "<h3>" : "h3",
+				command: "FormatBlock",
+				"arguments": "<h3>",
 				tags: ["h3"],
 				tooltip: "Header 3"
 			},
@@ -511,7 +511,6 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 			events: {},
 			autoGrow: false,
 			autoSave: true,
-			brIE: false,					// http://code.google.com/p/jwysiwyg/issues/detail?id=15
 			formHeight: 270,
 			formWidth: 440,
 			iFrameClass: null,
@@ -1441,52 +1440,6 @@ html: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.o
 				});
 			} 
 			
-			if (self.options.brIE) {
-				var prevKey = -1;
-				$(self.editorDoc).keydown(function (event) {
-					if (event.keyCode === 13 && prevKey === 13)
-						return true;
-					prevKey = event.keyCode;
-					
-					if (event.keyCode === 13 && (!event.altKey && !event.ctrlKey && !event.shiftKey) ) {
-						
-						if ($.browser.msie || $.browser.opera) {
-							var rng = self.getRange();
-							if (rng) {
-								rng.pasteHTML("<br/>");
-								rng.collapse(false);
-								rng.select();
-							} else {
-								self.insertHtml('<br/>');
-							}						
-						} else {
-							var selection = self.editorDoc.getSelection();
-							if (selection && selection.getRangeAt && selection.rangeCount) {
-								var range = selection.getRangeAt(0);
-								if (!range) return true;
-								
-								// Replace selected content by a newline
-								var newlineEl = document.createElement('br');
-								range.deleteContents();
-								range.insertNode(newlineEl);
-
-								// Remove selection and place cursor after newline
-								range.setStartAfter(newlineEl);
-								range.collapse(true);
-								selection.removeAllRanges();
-								selection.addRange(range);
-							} else {
-								return true;
-							}
-
-						}
-						return false;
-					}
-
-					return true;
-				});
-			}
-
 			if (self.options.plugins.rmFormat.rmMsWordMarkup) {
 				$(self.editorDoc).bind("keyup.wysiwyg", function (event) {
 					if (event.ctrlKey || event.metaKey) {
